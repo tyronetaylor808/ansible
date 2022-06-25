@@ -13,29 +13,30 @@ ansible_ssh_common_args='-o ProxyCommand="ssh -p 22 admin@192.168.8.114 -W %h:%p
 ```
 ### playbook结构
 ```
-[root@jenkins ansible]# tree .
-.
-├── nginx.yaml
-└── roles
+[root@jenkins ansible]# tree playbooks/ roles/
+playbooks/      # 存放对于roles的playbook文件
+└── nginx.yaml
+roles/
+└── nginx
     ├── README.md     # 说明文件
     ├── defaults
-    │   └── main.yml  # 可被覆写的变数。
-    ├── files         # 需复制到 Managed node 的档案。
-    │   └── nginx-1.21.6.tar.gz    
-    ├── handlers 
-    │   └── main.yml  # 主要的 handler。
-    ├── meta
-    │   └── main.yml
+    │   └── main.yml    # 可被覆写的变数。
+    ├── files        # 需复制到 Managed node 的档案。
+    │   └── nginx-1.21.6.tar.gz
+    ├── handlers
+    │   └── main.yml        # 主要的 handler。
     ├── tasks
-    │   └── main.yml  # 主要的 task。
-    ├── templates     # 集中存放 Jinja2 模板的目录。
-    │   └── nginx.conf.j2
+    │   └── main.yaml   # 主要的 task。
+    ├── templates    # 集中存放 Jinja2 模板的目录。
+    │   ├── nginx.conf.j2
+    │   └── nginx.service.j2
     └── vars
-        └── main.yml  # 不该被覆写的变数。
+        └── main.yml   # 不该被覆写的变数。
+
+
  ```       
  ### ansible传入变量方式
  ```
  ansible-playbook -i inventory.ini playbooks/nginx.yml -v -e 'hosts=nginx' 
  ansible-playbook -i inventory.ini playbooks/nginx.yml -v -e '@vars.yaml' 
-  
  ```
